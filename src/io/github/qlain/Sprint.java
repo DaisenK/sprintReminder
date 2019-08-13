@@ -25,7 +25,8 @@ public class Sprint implements SprintInterface {
 
     public void updateLastSprint() {
         if (isReportNow()) {
-            setLastSprint(getLastSprint().plusDays(getSprintDuration()));
+            setLastSprint(getNow().plusDays(getSprintDuration()));
+            System.out.println("Chenge to LastSprint:" + getLastSprint());
         }
     }
 
