@@ -3,7 +3,6 @@ package io.github.qlain;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class Main {
             if (sprint.isReportNow()) {
                 slack.postMessage(LocalDate.now() + "\n今日は進捗報告の日です:parrot:");
                 sprintCount++;
-                sprint.updateLastSprint();
+                sprint.updateNextSprint();
             }
             try {
                 Thread.sleep(300_000);

@@ -3,30 +3,33 @@ package io.github.qlain;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class Sprint implements SprintInterface {
 
     private int sprintDuration;
-    private LocalDate lastSprint;
+    private LocalDate nextSprint;
     private LocalDate now;
+    private ZoneId timezone;
 
     Sprint(LocalDate firstSprint, int sprintDuration) {
-        this.lastSprint = firstSprint;
+        this.nextSprint = firstSprint;
         this.sprintDuration = sprintDuration;
+        this.timezone = ZoneId.of("GMT");
     }
 
     public boolean isReportNow() {
-        setNow(LocalDate.now());
+        setNow(LocalDate.now(getTimezone()));
 
-        long diff = Duration.between(getLastSprint().atTime(9, 0, 0), getNow().atTime(9, 0, 0)).toDays();
+        long diff = Duration.between(getNextSprint().atTime(0, 0, 0), getNow().atTime(0, 0, 0)).toDays();
 
         return diff >= getSprintDuration();
     }
 
-    public void updateLastSprint() {
+    void updateNextSprint() {
         if (isReportNow()) {
-            setLastSprint(getNow().plusDays(getSprintDuration()));
-            System.out.println("Change to LastSprint:" + getLastSprint());
+            setNextSprint(getNow().plusDays(getSprintDuration()));
+            System.out.println("Change to NextSprint:" + getNextSprint());
         }
     }
 
@@ -34,12 +37,12 @@ public class Sprint implements SprintInterface {
         return this.sprintDuration;
     }
 
-    private LocalDate getLastSprint() {
-        return this.lastSprint;
+    private LocalDate getNextSprint() {
+        return this.nextSprint;
     }
 
-    private void setLastSprint(LocalDate lastSprint) {
-        this.lastSprint = lastSprint;
+    private void setNextSprint(LocalDate nextSprint) {
+        this.nextSprint = nextSprint;
     }
 
     private LocalDate getNow() {
@@ -48,5 +51,9 @@ public class Sprint implements SprintInterface {
 
     private void setNow(LocalDate now) {
         this.now = now;
+    }
+
+    private ZoneId getTimezone() {
+        return this.timezone;
     }
 }
